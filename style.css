@@ -1,104 +1,143 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #9BA4B5;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .container {
-    background-color: #394867;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px #F1F6F9;
-    padding: 20px;
-    width: 300px;
-  }
-  
-  h1 {
-    margin-top: 0;
-    text-align: center;
-  }
-  
-  .status-bar {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .status-bar-label {
-    flex: 1;
-    font-weight: bold;
-  }
-  
-  .status-bar-container {
-    flex: 5;
-    height: 30px; /* Adjust the height for longer bars */
-    background-color: #9BA4B5;
-    border-radius: 15px; /* Adjust the border-radius for longer bars */
-    overflow: hidden;
-    margin: 10px;
-    position: relative; /* Add this to position the numbers */
-  }
-  
-  .status-bar-fill {
-    height: 100%;
-    background-color: #73accf;
-    border-radius: 15px; /* Adjust the border-radius for longer bars */
-    transition: width 0.2s ease;
-  }
-  
-  .status-bar-text {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #212A3E;
-    font-size: 16px; /* Adjust the font size as desired */
-  }
-  
-  .input-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  label {
-    flex: 1;
-  }
-  
-  input {
-    flex: 2;
-    padding: 5px;
-    border: 1px solid #73accf;
-    border-radius: 4px;
-  }
-  
-  .button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  button {
-    flex: 1;
-    padding: 10px;
-    background-color: #73accf;
-    color: #212A3E;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 5px;
-  }
-  
-  button:hover {
-    background-color: #7fc3ee;
-  }
-  
+  font-family: Arial, sans-serif;
+  background-color: #9BA4B5;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  background-color: #394867;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px #F1F6F9;
+  padding: 20px;
+  width: 300px;
+}
+
+.dice-container-wrapper {
+  display: flex;
+  justify-content: center;
+  background-color: #394867;
+  border: 1px solid #394867;
+  box-shadow: 0 4px 4px #F1F6F9;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.dice-container {
+  margin: 20px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  font-size: 36px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+}
+
+.dice-3 {
+  background-color: #F44336;
+  color: #fff;
+}
+
+.dice-20 {
+  background-color: #2196F3;
+  color: #fff;
+}
+
+h1 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.status-bar-label {
+  flex: 1;
+  font-weight: bold;
+}
+
+.status-bar-container {
+  flex: 5;
+  height: 30px; /* Adjust the height for longer bars */
+  background-color: #9BA4B5;
+  border-radius: 15px; /* Adjust the border-radius for longer bars */
+  overflow: hidden;
+  margin: 10px;
+  position: relative; /* Add this to position the numbers */
+}
+
+.status-bar-fill {
+  height: 100%;
+  background-color: #73accf;
+  border-radius: 15px; /* Adjust the border-radius for longer bars */
+  transition: width 0.2s ease;
+}
+
+.status-bar-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #212A3E;
+  font-size: 16px; /* Adjust the font size as desired */
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+label {
+  flex: 1;
+}
+
+input {
+  flex: 2;
+  padding: 5px;
+  border: 1px solid #73accf;
+  border-radius: 4px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+button {
+  flex: 1;
+  padding: 10px;
+  background-color: #73accf;
+  color: #212A3E;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+}
+
+button:hover {
+  background-color: #7fc3ee;
+}

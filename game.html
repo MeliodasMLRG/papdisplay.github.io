@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="game-container">
     <div class="container">
       <h1>Stats</h1>
       <div class="status-bar">
@@ -30,72 +31,141 @@
         <button id="decreaseMP">MP-</button>
       </div>
     </div>
-  
-    <script>
-      // Retrieve maxHP and maxMP from the URL query parameters
-      const urlParams = new URLSearchParams(window.location.search);
-      const maxHP = parseInt(urlParams.get("maxHP"));
-      const maxMP = parseInt(urlParams.get("maxMP"));
-  
-      // Initialize current HP and MP to their maximum values
-      let currentHP = maxHP;
-      let currentMP = maxMP;
-  
-      // Function to update the HP and MP bars
-      function updateBars() {
-        const hpBarFill = document.getElementById("hpBar");
-        const mpBarFill = document.getElementById("mpBar");
-        const hpPercentage = (currentHP / maxHP) * 100;
-        const mpPercentage = (currentMP / maxMP) * 100;
-        hpBarFill.style.width = hpPercentage + "%";
-        mpBarFill.style.width = mpPercentage + "%";
+    <div class="dice-container-wrapper">
+      <div class="dice-container dice-3">
+        <div id="dice3" class="dice">3</div>
+      </div>
+      <div class="dice-container">
+        <div id="dice6" class="dice">6</div>
+      </div>
+      <div class="dice-container dice-20">
+        <div id="dice20" class="dice">20</div>
+      </div>
+    </div>
+  </div>
+
+  <audio id="diceRollSound" src="dice_rolling.mp3"></audio>
+
+  <script>
+    // Retrieve maxHP and maxMP from the URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const maxHP = parseInt(urlParams.get("maxHP"));
+    const maxMP = parseInt(urlParams.get("maxMP"));
+
+    // Initialize current HP and MP to their maximum values
+    let currentHP = maxHP;
+    let currentMP = maxMP;
+
+    // Function to update the HP and MP bars
+    function updateBars() {
+      const hpBarFill = document.getElementById("hpBar");
+      const mpBarFill = document.getElementById("mpBar");
+      const hpPercentage = (currentHP / maxHP) * 100;
+      const mpPercentage = (currentMP / maxMP) * 100;
+      hpBarFill.style.width = hpPercentage + "%";
+      mpBarFill.style.width = mpPercentage + "%";
+    }
+
+    // Function to update the HP and MP text elements
+    function updateTexts() {
+      const hpText = document.getElementById("hpText");
+      const mpText = document.getElementById("mpText");
+      hpText.textContent = `${currentHP} / ${maxHP}`;
+      mpText.textContent = `${currentMP} / ${maxMP}`;
+    }
+
+    // Function to handle mouse sliding on bars
+    function handleBarSlide(event) {
+      const bar = event.target;
+      const barRect = bar.getBoundingClientRect();
+      const offsetX = event.clientX - barRect.left;
+      const percentage = Math.min(100, Math.max(0, (offsetX / barRect.width) * 100));
+      
+      if (bar.id === "hpBar") {
+        currentHP = Math.floor((percentage / 100) * maxHP);
+      } else if (bar.id === "mpBar") {
+        currentMP = Math.floor((percentage / 100) * maxMP);
       }
-  
-      // Function to update the HP and MP text elements
-      function updateTexts() {
-        const hpText = document.getElementById("hpText");
-        const mpText = document.getElementById("mpText");
-        hpText.textContent = `${currentHP} / ${maxHP}`;
-        mpText.textContent = `${currentMP} / ${maxMP}`;
-      }
-  
-      // Button click event listeners to increase and decrease HP
-      document.getElementById("increaseHP").addEventListener("click", function () {
-        if (currentHP < maxHP) {
-          currentHP++;
-          updateBars();
-          updateTexts();
-        }
-      });
-  
-      document.getElementById("decreaseHP").addEventListener("click", function () {
-        if (currentHP > 0) {
-          currentHP--;
-          updateBars();
-          updateTexts();
-        }
-      });
-  
-      // Button click event listeners to increase and decrease MP
-      document.getElementById("increaseMP").addEventListener("click", function () {
-        if (currentMP < maxMP) {
-          currentMP++;
-          updateBars();
-          updateTexts();
-        }
-      });
-  
-      document.getElementById("decreaseMP").addEventListener("click", function () {
-        if (currentMP > 0) {
-          currentMP--;
-          updateBars();
-          updateTexts();
-        }
-      });
-  
-      // Initial update of the bars and texts
+
       updateBars();
       updateTexts();
-    </script>
-  </body>
+    }
+
+    // Add event listener to enable sliding behavior
+    document.getElementById("hpBar").addEventListener("mousedown", function (event) {
+      handleBarSlide(event);
+      document.addEventListener("mousemove", handleBarSlide);
+    });
+
+    document.getElementById("mpBar").addEventListener("mousedown", function (event) {
+      handleBarSlide(event);
+      document.addEventListener("mousemove", handleBarSlide);
+    });
+
+    document.addEventListener("mouseup", function () {
+      document.removeEventListener("mousemove", handleBarSlide);
+    });
+
+    // Button click event listeners to increase and decrease HP
+    document.getElementById("increaseHP").addEventListener("click", function () {
+      if (currentHP < maxHP) {
+        currentHP++;
+        updateBars();
+        updateTexts();
+      }
+    });
+
+    document.getElementById("decreaseHP").addEventListener("click", function () {
+      if (currentHP > 0) {
+        currentHP--;
+        updateBars();
+        updateTexts();
+      }
+    });
+
+    // Button click event listeners to increase and decrease MP
+    document.getElementById("increaseMP").addEventListener("click", function () {
+      if (currentMP < maxMP) {
+        currentMP++;
+        updateBars();
+        updateTexts();
+      }
+    });
+
+    document.getElementById("decreaseMP").addEventListener("click", function () {
+      if (currentMP > 0) {
+        currentMP--;
+        updateBars();
+        updateTexts();
+      }
+    });
+
+    // Function to simulate rolling the dice and update the number
+    function rollDice(diceElement, maxNumber) {
+      const randomNumber = Math.floor(Math.random() * maxNumber) + 1;
+      diceElement.textContent = randomNumber;
+
+      // Play the dice roll sound
+      const diceRollSound = document.getElementById("diceRollSound");
+      diceRollSound.play();
+    }
+
+    // Add click event listeners to the dice containers to roll the dice
+    document.getElementById("dice6").addEventListener("click", function () {
+      rollDice(this, 6);
+    });
+
+    document.getElementById("dice3").addEventListener("click", function () {
+      rollDice(this, 3);
+    });
+
+    document.getElementById("dice20").addEventListener("click", function () {
+      rollDice(this, 20);
+    });
+
+    // Initial update of the bars and texts
+    updateBars();
+    updateTexts();
+  </script>
+</body>
 </html>
