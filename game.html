@@ -25,10 +25,10 @@
         </div>
       </div>
       <div class="button-container">
-        <button id="increaseHP">HP+</button>
-        <button id="decreaseHP">HP-</button>
-        <button id="increaseMP">MP+</button>
-        <button id="decreaseMP">MP-</button>
+        <button id="increaseHP" onmousedown="startContinuousChange('hp', true)" onmouseup="stopContinuousChange()">HP+</button>
+        <button id="decreaseHP" onmousedown="startContinuousChange('hp', false)" onmouseup="stopContinuousChange()">HP-</button>
+        <button id="increaseMP" onmousedown="startContinuousChange('mp', true)" onmouseup="stopContinuousChange()">MP+</button>
+        <button id="decreaseMP" onmousedown="startContinuousChange('mp', false)" onmouseup="stopContinuousChange()">MP-</button>
       </div>
     </div>
     <div class="dice-container-wrapper">
@@ -106,39 +106,39 @@
       document.removeEventListener("mousemove", handleBarSlide);
     });
 
-    // Button click event listeners to increase and decrease HP
-    document.getElementById("increaseHP").addEventListener("click", function () {
-      if (currentHP < maxHP) {
-        currentHP++;
-        updateBars();
-        updateTexts();
-      }
-    });
+    let continuousChangeIntervalId;
 
-    document.getElementById("decreaseHP").addEventListener("click", function () {
-      if (currentHP > 0) {
-        currentHP--;
+    // Function to start continuous change (called on button mousedown)
+    function startContinuousChange(type, isIncreasing) {
+      continuousChangeIntervalId = setInterval(function () {
+        if (isIncreasing) {
+          if (type === "hp" && currentHP < maxHP) {
+            currentHP++;
+          } else if (type === "mp" && currentMP < maxMP) {
+            currentMP++;
+          }
+        } else {
+          if (type === "hp" && currentHP > 0) {
+            currentHP--;
+          } else if (type === "mp" && currentMP > 0) {
+            currentMP--;
+          }
+        }
         updateBars();
         updateTexts();
-      }
-    });
+      }, 100); // Adjust the interval time (in milliseconds) as per your preference
+    }
 
-    // Button click event listeners to increase and decrease MP
-    document.getElementById("increaseMP").addEventListener("click", function () {
-      if (currentMP < maxMP) {
-        currentMP++;
-        updateBars();
-        updateTexts();
-      }
-    });
+    // Function to stop continuous change (called on button mouseup)
+    function stopContinuousChange() {
+      clearInterval(continuousChangeIntervalId);
+    }
 
-    document.getElementById("decreaseMP").addEventListener("click", function () {
-      if (currentMP > 0) {
-        currentMP--;
-        updateBars();
-        updateTexts();
-      }
-    });
+    // Add event listeners to the buttons for starting continuous change
+    document.getElementById("increaseHP").addEventListener("mouseleave", stopContinuousChange);
+    document.getElementById("decreaseHP").addEventListener("mouseleave", stopContinuousChange);
+    document.getElementById("increaseMP").addEventListener("mouseleave", stopContinuousChange);
+    document.getElementById("decreaseMP").addEventListener("mouseleave", stopContinuousChange);
 
     // Function to simulate rolling the dice and update the number
     function rollDice(diceElement, maxNumber) {
