@@ -25,10 +25,10 @@
         </div>
       </div>
       <div class="button-container">
-        <button id="increaseHP" onmousedown="startContinuousChange('hp', true)" ontouchstart="startContinuousChange('hp', true)" onmouseup="stopContinuousChange()" ontouchend="stopContinuousChange()">HP+</button>
-        <button id="decreaseHP" onmousedown="startContinuousChange('hp', false)" ontouchstart="startContinuousChange('hp', false)" onmouseup="stopContinuousChange()" ontouchend="stopContinuousChange()">HP-</button>
-        <button id="increaseMP" onmousedown="startContinuousChange('mp', true)" ontouchstart="startContinuousChange('mp', true)" onmouseup="stopContinuousChange()" ontouchend="stopContinuousChange()">MP+</button>
-        <button id="decreaseMP" onmousedown="startContinuousChange('mp', false)" ontouchstart="startContinuousChange('mp', false)" onmouseup="stopContinuousChange()" ontouchend="stopContinuousChange()">MP-</button>
+        <button id="increaseHP" onmousedown="handleContinuousChange('hp', true)" ontouchstart="handleContinuousChange('hp', true)" onmouseup="stopContinuousChange()" ontouchend="stopContinuousChange()">HP+</button>
+        <button id="decreaseHP" onmousedown="handleContinuousChange('hp', false)" ontouchstart="handleContinuousChange('hp', false)" onmouseup="stopContinuousChange()" ontouchend="stopContinuousChange()">HP-</button>
+        <button id="increaseMP" onmousedown="handleContinuousChange('mp', true)" ontouchstart="handleContinuousChange('mp', true)" onmouseup="stopContinuousChange()" ontouchend="stopContinuousChange()">MP+</button>
+        <button id="decreaseMP" onmousedown="handleContinuousChange('mp', false)" ontouchstart="handleContinuousChange('mp', false)" onmouseup="stopContinuousChange()" ontouchend="stopContinuousChange()">MP-</button>
       </div>
     </div>
     <div class="dice-container-wrapper">
@@ -108,9 +108,10 @@
 
     let continuousChangeIntervalId;
 
-    // Function to start continuous change (called on button mousedown or touchstart)
-    function startContinuousChange(type, isIncreasing) {
-      continuousChangeIntervalId = setInterval(function () {
+    // Function to handle continuous change (called on button mousedown or touchstart)
+    function handleContinuousChange(type, isIncreasing) {
+      // Function to increase or decrease the value
+      function changeValue() {
         if (isIncreasing) {
           if (type === "hp" && currentHP < maxHP) {
             currentHP++;
@@ -126,7 +127,15 @@
         }
         updateBars();
         updateTexts();
-      }, 100); // Adjust the interval time (in milliseconds) as per your preference
+      }
+
+      // Initial call for single click
+      changeValue();
+
+      // Set the interval for continuous change after a short delay
+      continuousChangeIntervalId = setInterval(function () {
+        changeValue();
+      }, 300); // Adjust the interval time (in milliseconds) as per your preference
     }
 
     // Function to stop continuous change (called on button mouseup or touchend)
