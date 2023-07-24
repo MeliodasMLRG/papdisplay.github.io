@@ -324,7 +324,9 @@
           updateBars();
           updateTexts();
         }
-      } else if (crazed) {
+      }
+
+      if (crazed) {
         if (currentHP - 2 > 0) {
           currentHP -= 2;
           updateBars();
@@ -335,7 +337,9 @@
           updateBars();
           updateTexts();
         }
-      } else if (cosmic) {
+      }
+      
+      if (cosmic) {
         if (currentHP - 5 > 0) {
           currentHP -= 5;
           updateBars();
