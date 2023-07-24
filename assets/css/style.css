@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #9BA4B5;
+  background-color: #2d3b55;
   margin: 0;
   padding: 0;
   display: flex;
@@ -150,6 +150,29 @@ input {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+}
+
+.most-container {
+  display: grid;
+  grid-template-columns: repeat(4, 85px);
+  justify-content: space-between;
+  margin-top: 20px;
+  background-color: #394867;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 4px 4px #F1F6F9;
+  
+}
+
+.end-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  background-color: #394867;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 4px 4px #F1F6F9;
+  
 }
 
 button {

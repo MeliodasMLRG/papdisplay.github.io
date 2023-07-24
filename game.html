@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Game</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
   <div class="game-container">
@@ -55,7 +55,24 @@
         <div id="level" class="level">1</div>
       </div>
     </div>
-  </div>
+    <div class="most-container">
+      <button id="Small_Hit" onmousedown="Cosmic_Damage()" ontouchstart="Cosmic_Damage()">
+        <img src="assets/images/Cosmic_Damage.png" alt="Small_Hit" style="width: 50px; height: 50px;">
+      </button>
+      <button id="Small_Hit" onmousedown="Corruption_Damage()" ontouchstart="Corruption_Damage()">
+        <img src="assets/images/Corruption_Damage.png" alt="Small_Hit" style="width: 50px; height: 50px;">
+      </button>
+      <button id="Small_Hit" onmousedown="Soul_Damage()" ontouchstart="Soul_Damage()">
+        <img src="assets/images/Soul_Damage.png" alt="Small_Hit" style="width: 50px; height: 50px;">
+      </button>
+      <button id="Small_Hit" onmousedown="Crazed_Damage()" ontouchstart="Crazed_Damage()">
+        <img src="assets/images/Crazed_Damage.png" alt="Small_Hit" style="width: 50px; height: 50px;">
+      </button>
+    </div>
+    <div class="end-container">
+      <button id="endTurn" onclick="endTurn()">End Turn</button>
+    </div>
+    </div>
 
   <audio id="diceRollSound" src="dice_rolling.mp3"></audio>
 
@@ -211,40 +228,134 @@
 
     const maxLevel = 10; // Maximum level for the dice
 
-let currentLevel = 1; // Initial level
+    let currentLevel = 1; // Initial level
 
-// Function to update the level display
-function updateLevelDisplay() {
-  const levelDisplay = document.querySelectorAll(".level");
-  levelDisplay.forEach((el) => (el.textContent = currentLevel));
-}
+    // Function to update the level display
+    function updateLevelDisplay() {
+      const levelDisplay = document.querySelectorAll(".level");
+      levelDisplay.forEach((el) => (el.textContent = currentLevel));
+    }
 
-// Function to handle leveling up
-function levelUp() {
-  if (currentEXP >= maxEXP && currentLevel < maxLevel) {
-    currentLevel++;
-    currentEXP = 0; // Reset the experience points after leveling up
-    updateExpBar(); // Update the experience bar to reflect the reset value
-    updateLevelDisplay(); // Update the level display
-  }
-}
+    // Function to handle leveling up
+    function levelUp() {
+      if (currentEXP >= maxEXP && currentLevel < maxLevel) {
+        currentLevel++;
+        currentEXP = 0; // Reset the experience points after leveling up
+        updateExpBar(); // Update the experience bar to reflect the reset value
+        updateLevelDisplay(); // Update the level display
+      }
+    }
 
-// ... (existing code) ...
+    // ... (existing code) ...
 
-// Call the levelUp function when gaining experience
-function gainExperience(amount) {
-  currentEXP = Math.min(maxEXP, currentEXP + amount);
-  updateExpBar();
-  levelUp(); // Call the levelUp function after gaining experience
-}
 
-// Initial update of the experience bar and level display
-updateExpBar();
-updateLevelDisplay();
 
-    // Initial update of the bars and texts
-    updateBars();
-    updateTexts();
+    // Call the levelUp function when gaining experience
+    function gainExperience(amount) {
+      currentEXP = Math.min(maxEXP, currentEXP + amount);
+      updateExpBar();
+      levelUp(); // Call the levelUp function after gaining experience
+    }
+
+    crazed = false;
+    corruption = false;
+    cosmic = false;
+
+    function Crazed_Damage() {
+      if (currentHP - 10 > 0) {
+        currentHP -= 10;
+        updateBars();
+        updateTexts();
+        crazed = true;
+      } else {
+        currentHP = 0;
+        updateBars();
+        updateTexts();
+      }
+    }
+
+    function Corruption_Damage() {
+      if (currentHP - 10 > 0) {
+        currentHP -= 10;
+        updateBars();
+        updateTexts();
+        corruption = true;
+      } else {
+        currentHP = 0;
+        updateBars();
+        updateTexts();
+      }
+    }
+
+    function Soul_Damage() {
+      if (currentHP - 5 > 0) {
+        currentHP -= 5;
+        updateBars();
+        updateTexts();
+      } else {
+        currentHP = 0;
+        updateBars();
+        updateTexts();
+      }
+    }
+
+    function Cosmic_Damage() {
+      if (currentHP - 15 > 0) {
+        currentHP -= 15;
+        updateBars();
+        updateTexts();
+        comsic = true;
+      } else {
+        currentHP = 0;
+        updateBars();
+        updateTexts();
+      }
+    }
+
+    function endTurn() {
+      if (corruption) {
+        if (currentHP - 2 > 0) {
+          currentHP -= 2;
+          updateBars();
+          updateTexts();
+          corruption = false;
+        } else {
+          currentHP = 0;
+          updateBars();
+          updateTexts();
+        }
+      } else if (crazed) {
+        if (currentHP - 2 > 0) {
+          currentHP -= 2;
+          updateBars();
+          updateTexts();
+          crazed = false;
+        } else {
+          currentHP = 0;
+          updateBars();
+          updateTexts();
+        }
+      } else if (cosmic) {
+        if (currentHP - 5 > 0) {
+          currentHP -= 5;
+          updateBars();
+          updateTexts();
+          comsic = false;
+        } else {
+          currentHP = 0;
+          updateBars();
+          updateTexts();
+        }
+      }
+    }
+
+      // Initial update of the experience bar and level display
+      updateExpBar();
+      updateLevelDisplay();
+
+      // Initial update of the bars and texts
+      updateBars();
+      updateTexts();
   </script>
 </body>
 </html>
