@@ -10,6 +10,15 @@
   <div class="game-container">
     <div class="container">
       <h1>Stats</h1>
+      <!-- Experience Bar -->
+      <div class="status-bar">
+        <div class="status-bar-label">EXP:</div>
+        <div class="status-bar-container">
+          <div id="expBar" class="status-bar-fill" style="width: 0;"></div>
+          <div id="expText" class="status-bar-text">0 / 100</div>
+        </div>
+      </div>
+      <!-- HP Bar -->
       <div class="status-bar">
         <div class="status-bar-label">HP:</div>
         <div class="status-bar-container">
@@ -17,6 +26,7 @@
           <div id="hpText" class="status-bar-text">0 / 100</div> <!-- Moved the HP text here -->
         </div>
       </div>
+      <!-- MP Bar -->
       <div class="status-bar">
         <div class="status-bar-label">MP:</div>
         <div class="status-bar-container">
@@ -40,6 +50,9 @@
       </div>
       <div class="dice-container dice-20">
         <div id="dice20" class="dice">20</div>
+      </div>
+      <div class="dice-container level">
+        <div id="level" class="level">1</div>
       </div>
     </div>
   </div>
@@ -159,18 +172,75 @@
       diceRollSound.play();
     }
 
+    const maxEXP = 100; // Maximum experience points
+    let currentEXP = 0; // Initial experience points
+
+    // Function to update the EXP bar
+    function updateExpBar() {
+      const expBarFill = document.getElementById("expBar");
+      const expText = document.getElementById("expText");
+      const expPercentage = (currentEXP / maxEXP) * 100;
+      expBarFill.style.width = expPercentage + "%";
+      expText.textContent = `${currentEXP} / ${maxEXP}`;
+    }
+
+    // Function to gain experience points
+    function gainExperience(amount) {
+      currentEXP = Math.min(maxEXP, currentEXP + amount);
+      updateExpBar();
+    }
+
+    // Initial update of the experience bar
+    updateExpBar();
+
     // Add click event listeners to the dice containers to roll the dice
     document.getElementById("dice6").addEventListener("click", function () {
       rollDice(this, 6);
+      gainExperience(3);
     });
 
     document.getElementById("dice3").addEventListener("click", function () {
       rollDice(this, 3);
+      gainExperience(2);
     });
 
     document.getElementById("dice20").addEventListener("click", function () {
       rollDice(this, 20);
+      gainExperience(4);
     });
+
+    const maxLevel = 10; // Maximum level for the dice
+
+let currentLevel = 1; // Initial level
+
+// Function to update the level display
+function updateLevelDisplay() {
+  const levelDisplay = document.querySelectorAll(".level");
+  levelDisplay.forEach((el) => (el.textContent = currentLevel));
+}
+
+// Function to handle leveling up
+function levelUp() {
+  if (currentEXP >= maxEXP && currentLevel < maxLevel) {
+    currentLevel++;
+    currentEXP = 0; // Reset the experience points after leveling up
+    updateExpBar(); // Update the experience bar to reflect the reset value
+    updateLevelDisplay(); // Update the level display
+  }
+}
+
+// ... (existing code) ...
+
+// Call the levelUp function when gaining experience
+function gainExperience(amount) {
+  currentEXP = Math.min(maxEXP, currentEXP + amount);
+  updateExpBar();
+  levelUp(); // Call the levelUp function after gaining experience
+}
+
+// Initial update of the experience bar and level display
+updateExpBar();
+updateLevelDisplay();
 
     // Initial update of the bars and texts
     updateBars();
