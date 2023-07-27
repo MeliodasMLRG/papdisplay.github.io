@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <div class="container">
+  <div class="input-container">
     <h1>Enter Stats</h1>
     <div class="input-group">
       <label for="maxHP">Max HP:</label>
@@ -17,8 +17,39 @@
       <label for="maxMP">Max MP:</label>
       <input type="number" id="maxMP" required>
     </div>
-    <button id="confirmBtn">Confirm</button>
+    <div class="button-container">
+      <button id="confirmBtn">Confirm</button>
+    </div>
   </div>
-  <script src="assets/java script/script.js"></script>
+  <script>
+    document.getElementById("confirmBtn").addEventListener("click", function () {
+        const maxHP = parseInt(document.getElementById("maxHP").value);
+        const maxMP = parseInt(document.getElementById("maxMP").value);
+      
+        if (!isNaN(maxHP) && !isNaN(maxMP)) {
+          // Redirect to the new page and pass maxHP and maxMP as query parameters
+          window.location.href = `game.html?maxHP=${maxHP}&maxMP=${maxMP}`;
+        } else {
+          alert("Please enter valid numbers for Max HP and Max MP.");
+        }
+
+        function updateBarsAndTexts() {
+            const hpText = document.getElementById("hpText");
+            const mpText = document.getElementById("mpText");
+          
+            hpText.textContent = `${currentHP} / ${maxHP}`;
+            mpText.textContent = `${currentMP} / ${maxMP}`;
+          
+            const hpBarFill = document.getElementById("hpBar");
+            const mpBarFill = document.getElementById("mpBar");
+            const hpPercentage = (currentHP / maxHP) * 100;
+            const mpPercentage = (currentMP / maxMP) * 100;
+            hpBarFill.style.width = hpPercentage + "%";
+            mpBarFill.style.width = mpPercentage + "%";
+          }
+
+      }
+    );
+  </script>
 </body>
 </html>

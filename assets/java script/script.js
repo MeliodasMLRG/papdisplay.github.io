@@ -24,5 +24,6 @@ document.getElementById("confirmBtn").addEventListener("click", function () {
         mpBarFill.style.width = mpPercentage + "%";
       }
 
-  });
+  }
+);
   

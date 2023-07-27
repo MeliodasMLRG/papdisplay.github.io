@@ -55,18 +55,32 @@
         <div id="level" class="level">1</div>
       </div>
     </div>
+    <div class="healing-container">
+      <button id="Area_Heal" onmousedown="Area_Healing()">
+        <img src="assets/images/Area_Healing.png" alt="Area_Heal" style="width: 50px; height: 50px;">
+      </button>
+      <button id="Healing_Potion" onmousedown="Healing_Potion()">
+        <img src="assets/images/Healing_Potion.png" alt="Healing_Potion" style="width: 50px; height: 50px;">
+      </button>
+      <button id="Cleanisng_Fluid" onmousedown="Cleanisng_Fluid()">
+        <img src="assets/images/Cleansing_Fluid.png" alt="Cleanisng_Fluid" style="width: 50px; height: 50px;">
+      </button>
+      <button id="Ice_Potion" onmousedown="Ice_Potion()">
+        <img src="assets/images/Ice_Potion.png" alt="Ice_Potion" style="width: 50px; height: 50px;">
+      </button>
+    </div>
     <div class="most-container">
-      <button id="Small_Hit" onmousedown="Cosmic_Damage()">
-        <img src="assets/images/Cosmic_Damage.png" alt="Small_Hit" style="width: 50px; height: 50px;">
+      <button id="Comsic_Damage" onmousedown="Cosmic_Damage()">
+        <img src="assets/images/Cosmic_Damage.png" alt="Comsic_Damage" style="width: 50px; height: 50px;">
       </button>
-      <button id="Small_Hit" onmousedown="Corruption_Damage()">
-        <img src="assets/images/Corruption_Damage.png" alt="Small_Hit" style="width: 50px; height: 50px;">
+      <button id="Corruption_Damage" onmousedown="Corruption_Damage()">
+        <img src="assets/images/Corruption_Damage.png" alt="Corruption_Damage" style="width: 50px; height: 50px;">
       </button>
-      <button id="Small_Hit" onmousedown="Soul_Damage()">
-        <img src="assets/images/Soul_Damage.png" alt="Small_Hit" style="width: 50px; height: 50px;">
+      <button id="Soul_Damage" onmousedown="Soul_Damage()">
+        <img src="assets/images/Soul_Damage.png" alt="Soul_Damage" style="width: 50px; height: 50px;">
       </button>
-      <button id="Small_Hit" onmousedown="Crazed_Damage()">
-        <img src="assets/images/Crazed_Damage.png" alt="Small_Hit" style="width: 50px; height: 50px;">
+      <button id="Crazed_Damage" onmousedown="Crazed_Damage()">
+        <img src="assets/images/Crazed_Damage.png" alt="Crazed_Damage" style="width: 50px; height: 50px;">
       </button>
     </div>
     <div class="end-container">
@@ -257,9 +271,68 @@
       levelUp(); // Call the levelUp function after gaining experience
     }
 
+    cleansed = false;
+    ice_potion = false;
+    ice_potion_number = 0;
+
+    function Area_Healing() {
+      if (currentHP + 10 < maxHP) {
+        currentHP += 10;
+        updateBars();
+        updateTexts();
+      } else {
+        currentHP = maxHP;
+        updateBars();
+        updateTexts();
+      }
+    }
+
+    function Healing_Potion() {
+      if (currentHP + 20 < maxHP) {
+        currentHP += 20;
+        updateBars();
+        updateTexts();
+      } else {
+        currentHP = maxHP;
+        updateBars();
+        updateTexts();
+      }
+    }
+
+    function Cleanisng_Fluid() {
+      if (currentHP + 5 < maxHP) {
+        currentHP += 5;
+        updateBars();
+        updateTexts();
+        cleansed = true;
+      } else {
+        cleansed = true;
+        currentHP = maxHP;
+        updateBars();
+        updateTexts();
+      }
+    }
+
+    function Ice_Potion() {
+      if (currentHP + 1 < maxHP) {
+        currentHP += 1;
+        updateBars();
+        updateTexts();
+        ice_potion = true;
+        ice_potion_number = 2;
+      } else {
+        ice_potion = true;
+        ice_potion_number = 2;
+        currentHP = maxHP;
+        updateBars();
+        updateTexts();
+      }
+    }
+
     crazed = false;
     corruption = false;
     cosmic = false;
+    soul = false;
 
     function Crazed_Damage() {
       if (currentHP - 10 > 0) {
@@ -292,6 +365,7 @@
         currentHP -= 5;
         updateBars();
         updateTexts();
+        soul = true;
       } else {
         currentHP = 0;
         updateBars();
@@ -304,7 +378,7 @@
         currentHP -= 15;
         updateBars();
         updateTexts();
-        comsic = true;
+        cosmic = true;
       } else {
         currentHP = 0;
         updateBars();
@@ -313,44 +387,69 @@
     }
 
     function endTurn() {
+
+      AllDamage = 0
+      AllHealing = 0
+
+      //Healing
+      if (cleansed) {
+        AllHealing = AllHealing + maxHP;
+        cleansed = false;
+      }
+
+      if (ice_potion_number >= 0) {
+        ice_potion_number = ice_potion_number - 1;
+        currentMP = currentMP + 5;
+      }
+
+      if (ice_potion) {
+        AllHealing = AllHealing + 2;
+        ice_potion = false;
+      }
+
+      //Damage
       if (corruption) {
-        if (currentHP - 2 > 0) {
-          currentHP -= 2;
-          updateBars();
-          updateTexts();
-          corruption = false;
-        } else {
-          currentHP = 0;
-          updateBars();
-          updateTexts();
-        }
+        AllDamage = AllDamage + 2;
+        corruption = false;
       }
 
       if (crazed) {
-        if (currentHP - 2 > 0) {
-          currentHP -= 2;
-          updateBars();
-          updateTexts();
-          crazed = false;
-        } else {
-          currentHP = 0;
-          updateBars();
-          updateTexts();
-        }
+        AllDamage = AllDamage + 2;
+        crazed = false;
       }
       
       if (cosmic) {
-        if (currentHP - 5 > 0) {
-          currentHP -= 5;
-          updateBars();
-          updateTexts();
-          comsic = false;
-        } else {
-          currentHP = 0;
-          updateBars();
-          updateTexts();
-        }
+        AllDamage = AllDamage + 5;
+        comsic = false;
       }
+
+      if (soul) {
+        AllDamage = AllDamage + maxHP;
+        soul = false;
+      }
+
+      //AllDamage
+      if (currentHP - AllDamage > 0) {
+        currentHP -= AllDamage;
+        updateBars();
+        updateTexts();
+      } else {
+        currentHP = 0;
+        updateBars();
+        updateTexts();
+      }
+
+      //AllHealing
+      if (currentHP + AllHealing < maxHP) {
+        currentHP += AllHealing;
+        updateBars();
+        updateTexts();
+      } else {
+        currentHP = maxHP;
+        updateBars();
+        updateTexts();
+      }
+
     }
 
       // Initial update of the experience bar and level display
